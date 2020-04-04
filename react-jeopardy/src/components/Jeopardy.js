@@ -37,7 +37,7 @@ class Jeopardy extends Component {
       }));
     } else {
       this.setState((state, props) => ({
-        score: state.score + state.data.value
+        score: state.score - state.data.value
       }));
     }
     this.getNewQuestion();
