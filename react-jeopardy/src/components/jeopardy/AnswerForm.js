@@ -23,6 +23,7 @@ class AnswerForm extends Component{
             answer: ""
         });
     }
+    
     render() {
         return (
             <div className = "AnswerForm">

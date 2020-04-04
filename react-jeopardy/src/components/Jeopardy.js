@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 //import our service
 import JeopardyService from "../jeopardyService";
-import AnswerForm from "./jeopardy/AnswerForm";
+import GameBoard from "./jeopardy/GameBoard";
 
 class Jeopardy extends Component {
 
@@ -49,15 +49,11 @@ class Jeopardy extends Component {
 
     return (
       <div className = "Jeopardy">
-        <h2>{category}</h2>
-        <h3>{this.state.data.value}</h3>
-        <div className = "clue">
-          {this.state.data.question}
-        </div>
-        <AnswerForm checkAnswer = {this.checkAnswer}/>
-        <div className = "score">
-          Your winnings: ${this.state.score}
-        </div>
+        <GameBoard
+          data = {this.state.data}
+          score = {this.state.score}
+          checkAnswer = {this.checkAnswer}
+        />
       </div>
     );
   }
