@@ -4,8 +4,9 @@ from django.shortcuts import render
 
 def index(request):
   context = {
+    "website": "Recipe Box V1",
     "author": "Author",
-    "article": "Article",
+    "recipe": "Recipe",
   }
   template_name = "index.html"
   return render(request, template_name, context)
