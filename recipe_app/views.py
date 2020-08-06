@@ -6,6 +6,7 @@ def index(request):
   context = {
     "website": "Recipe Box V1",
     "author": "Author",
+    "bio": "Bio",
     "recipe": "Recipe",
   }
   template_name = "index.html"
