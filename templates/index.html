@@ -9,21 +9,19 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js" integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous"></script>
   </head>
   <body>
+    {% extends 'base.html' %}
+    {% block content %}
     <div class="container">
       <h1>{{website}}</h1>
       <h2>Recipes</h2>
       <ul>
-        {% for post in recipes %}
+        {% for post in recipe %}
           <li>
-            {{ post.title }} - by {{ post.author.name }}
-            <ul>
-              <li>
-                {{ post.description }}
-              </li>
-            </ul>
+            <a href="/post/{{ post.id }}/">{{ post.title }}</a>
           </li>
         {% endfor %}
       </ul>
     </div>
+    {% endblock content %}
   </body>
 </html>
