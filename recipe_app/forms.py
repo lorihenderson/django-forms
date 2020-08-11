@@ -7,3 +7,9 @@ class RecipeForm(forms.Form):
   description = forms.CharField(widget=forms.Textarea)
   instructions = forms.CharField(widget=forms.Textarea)
   author = forms.ModelChoiceField(queryset=Author.objects.all())
+
+
+class AuthorForm(forms.ModelForm):
+  class Meta:
+    model = Author
+    fields = ["name", "bio"]
