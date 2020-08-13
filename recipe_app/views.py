@@ -1,8 +1,10 @@
 from django.shortcuts import render, HttpResponseRedirect, reverse, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+
 from recipe_app.models import Recipe, Author
-from recipe_app.forms import RecipeForm, AuthorForm, LoginForm
+from recipe_app.forms import RecipeForm, AuthorForm, LoginForm, SignUpForm
 
 # Create your views here.
 
@@ -64,8 +66,21 @@ def login_view(request):
       user = authenticate(request, username=data.get('username'), password=data.get('password'))
       if user:
         login(request, user)
-        return HttpResponseRedirect(reverse('home'))
+        return HttpResponseRedirect(request.GET.get('next', reverse('home')))
   form = LoginForm()
+  return render(request, "generic_form.html", {"form": form})
+
+
+def signup_view(request):
+  if request.method == "POST":
+    form = SignUpForm(request.POST)
+    if form.is_valid():
+      data = form.cleaned_data
+      new_user = User.objects.create_user(username=data.get('username'), password=data.get('password'))
+      login(request, new_user)
+      return HttpResponseRedirect(reverse('home'))
+  
+  form = SignUpForm()
   return render(request, "generic_form.html", {"form": form})
 
 
