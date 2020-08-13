@@ -14,6 +14,7 @@ class AuthorForm(forms.ModelForm):
     model = Author
     fields = ["name", "bio"]
 
+
 class LoginForm(forms.Form):
   username = forms.CharField(max_length=100)
   password = forms.CharField(widget=forms.PasswordInput)
