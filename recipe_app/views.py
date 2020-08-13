@@ -3,8 +3,10 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
+from django.http import HttpResponseForbidden
+
 from recipe_app.models import Recipe, Author
-from recipe_app.forms import RecipeForm, AuthorForm, LoginForm, SignUpForm
+from recipe_app.forms import RecipeForm, AuthorForm, LoginForm
 
 # Create your views here.
 
@@ -41,7 +43,7 @@ def recipe_form_view(request):
         time_req=data.get('time_req'),
         description=data.get('description'),
         instructions=data.get('instructions'),
-        author=data.get('author'),
+        author=request.user.author,
       )
       return HttpResponseRedirect(reverse('home'))
   form = RecipeForm()
@@ -52,7 +54,10 @@ def recipe_form_view(request):
 def author_form_view(request):
   if request.method == "POST":
     form = AuthorForm(request.POST)
-    form.save()
+    if form.is_valid():
+      data = form.cleaned_data
+      new_user = User.objects.create_user(username=data.get('username'), password=data.get('password'))
+      Author.objects.create(name=data.get("name"), bio=data.get('bio'), user=new_user)
     return HttpResponseRedirect(reverse('home'))
   form = AuthorForm()
   return render(request, "generic_form.html", {"form": form})
@@ -68,19 +73,6 @@ def login_view(request):
         login(request, user)
         return HttpResponseRedirect(request.GET.get('next', reverse('home')))
   form = LoginForm()
-  return render(request, "generic_form.html", {"form": form})
-
-
-def signup_view(request):
-  if request.method == "POST":
-    form = SignUpForm(request.POST)
-    if form.is_valid():
-      data = form.cleaned_data
-      new_user = User.objects.create_user(username=data.get('username'), password=data.get('password'))
-      login(request, new_user)
-      return HttpResponseRedirect(reverse('home'))
-  
-  form = SignUpForm()
   return render(request, "generic_form.html", {"form": form})
 
 
